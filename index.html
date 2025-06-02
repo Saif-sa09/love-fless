@@ -71,11 +71,23 @@
       background: #ffea00;
     }
 
-    /* Message shown after selection */
+    /* Base message style */
     .message {
       font-size: 2rem;
       opacity: 0;
-      animation: messageFadeIn 1s forwards;
+      display: inline-block;
+    }
+
+    /* "Sorry pocca, I love you" (cute vibe) */
+    .message-love {
+      color: #ff69b4;
+      animation: loveFadeIn 1s forwards, heartbeat 1.2s infinite 1s;
+    }
+
+    /* "kaner opor debo re" (angry-cute vibe) */
+    .message-angry {
+      color: #ff4500;
+      animation: angryFadeIn 1s forwards, shake 0.5s ease-in-out 1.2s 4;
     }
 
     /* Bubble container */
@@ -127,10 +139,35 @@
       100% { transform: scale(1); opacity: 1; }
     }
 
-    /* Fade-in for response message */
-    @keyframes messageFadeIn {
+    /* Fade-in and slight scale for love message */
+    @keyframes loveFadeIn {
       from { opacity: 0; transform: scale(0.8); }
       to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Heartbeat pulse */
+    @keyframes heartbeat {
+      0% { transform: scale(1); }
+      25% { transform: scale(1.1); }
+      40% { transform: scale(0.9); }
+      60% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    /* Fade-in and slight scale for angry message */
+    @keyframes angryFadeIn {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Shake animation */
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      20% { transform: translateX(-5px); }
+      40% { transform: translateX(5px); }
+      60% { transform: translateX(-5px); }
+      80% { transform: translateX(5px); }
+      100% { transform: translateX(0); }
     }
   </style>
 </head>
@@ -171,27 +208,26 @@
     const btnNaa = document.getElementById('btn-naa');
     const content = document.getElementById('content');
 
-    // Function to clear content and show a new message
-    function showMessage(text) {
+    // Function to clear content and show a new message with proper class
+    function showMessage(text, className) {
       // Remove existing prompt box
       const promptBox = document.getElementById('prompt-box');
       if (promptBox) promptBox.remove();
 
       // Create message element
       const msgEl = document.createElement('div');
-      msgEl.classList.add('message');
+      msgEl.classList.add('message', className);
       msgEl.innerText = text;
       content.appendChild(msgEl);
     }
 
     // Click handlers
     btnNaa.addEventListener('click', () => {
-      showMessage('kaner opor debo re');
+      showMessage('kaner opor debo re', 'message-angry');
     });
 
     btnHuu.addEventListener('click', () => {
-      // Create an animated "Sorry pocca, I love you"
-      showMessage('Sorry pocca, I love you');
+      showMessage('Sorry pocca, I love you', 'message-love');
     });
   </script>
 </body>
