@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Animated Prompt with Bubble Background</title>
+  <style>
+    /* Reset margins/padding */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0e1a2b;
+      position: relative;
+    }
+
+    /* Container for everything */
+    .container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: #fff;
+    }
+
+    /* Style for the prompt box */
+    .prompt-box {
+      background: rgba(0, 0, 0, 0.5);
+      padding: 30px 40px;
+      border-radius: 10px;
+      backdrop-filter: blur(5px);
+      animation: fadeInPrompt 1s ease-out;
+    }
+
+    .prompt-box h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      animation: textPop 1s ease-out;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 20px;
+    }
+
+    .buttons button {
+      padding: 12px 24px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      color: #0e1a2b;
+      background: #ffd700;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .buttons button:hover {
+      transform: scale(1.05);
+      background: #ffea00;
+    }
+
+    /* Message shown after selection */
+    .message {
+      font-size: 2rem;
+      opacity: 0;
+      animation: messageFadeIn 1s forwards;
+    }
+
+    /* Bubble container */
+    .bubbles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .bubble {
+      position: absolute;
+      bottom: -100px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 50%;
+      animation: rise 15s infinite;
+    }
+
+    /* Keyframes for bubbles rising upward */
+    @keyframes rise {
+      0% {
+        transform: translateY(0) scale(0.5);
+        opacity: 0;
+      }
+      20% {
+        opacity: 0.3;
+      }
+      50% {
+        opacity: 0.6;
+      }
+      100% {
+        transform: translateY(-120vh) scale(1.2);
+        opacity: 0;
+      }
+    }
+
+    /* Fade-in animation for prompt */
+    @keyframes fadeInPrompt {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Pop-in for text */
+    @keyframes textPop {
+      0% { transform: scale(0.8); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* Fade-in for response message */
+    @keyframes messageFadeIn {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Bubble background -->
+  <div class="bubbles" id="bubbles-container"></div>
+
+  <!-- Foreground content -->
+  <div class="container" id="content">
+    <div class="prompt-box" id="prompt-box">
+      <h1>ektaa kotha shunba?</h1>
+      <div class="buttons">
+        <button id="btn-huu">huu</button>
+        <button id="btn-naa">Naa</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Generate a bunch of bubbles with random sizes, positions, and durations
+    const bubblesContainer = document.getElementById('bubbles-container');
+    const bubbleCount = 20; // number of bubbles
+
+    for (let i = 0; i < bubbleCount; i++) {
+      const bubble = document.createElement('div');
+      bubble.classList.add('bubble');
+      const size = Math.random() * 60 + 20; // 20px to 80px
+      bubble.style.width = size + 'px';
+      bubble.style.height = size + 'px';
+      bubble.style.left = Math.random() * 100 + '%';
+      bubble.style.animationDelay = -(Math.random() * 15) + 's';
+      bubble.style.animationDuration = (10 + Math.random() * 10) + 's';
+      bubblesContainer.appendChild(bubble);
+    }
+
+    // Grab elements
+    const btnHuu = document.getElementById('btn-huu');
+    const btnNaa = document.getElementById('btn-naa');
+    const content = document.getElementById('content');
+
+    // Function to clear content and show a new message
+    function showMessage(text) {
+      // Remove existing prompt box
+      const promptBox = document.getElementById('prompt-box');
+      if (promptBox) promptBox.remove();
+
+      // Create message element
+      const msgEl = document.createElement('div');
+      msgEl.classList.add('message');
+      msgEl.innerText = text;
+      content.appendChild(msgEl);
+    }
+
+    // Click handlers
+    btnNaa.addEventListener('click', () => {
+      showMessage('kaner opor debo re');
+    });
+
+    btnHuu.addEventListener('click', () => {
+      // Create an animated "Sorry pocca, I love you"
+      showMessage('Sorry pocca, I love you');
+    });
+  </script>
+</body>
+</html>
